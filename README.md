@@ -5,36 +5,32 @@ Simple Java experiment for comparing three provided bubble-sort algorithms.
 ## Files
 
 # ArrayData.java; 
-    *there is array size and repetitions variable that other clients can change the size and repetitions.
-    *it chooses to produce Integer, Double and String array.
-    *for the string array; "Word%010d" is used to produce  strings like "Word0000000001". Then these strings are shuffled to produce randomized input order. if it is produced like Word2 or Word10 that word10 is comes ahead of Word2. Random strings like "avbb" , "dvrnhhh" etc. not used because if it is used it has to produce one constant and fixed string list and it has to shuffle it or reverse it then measure it, but this time the experiment condition of randomizing will be strictly constrained or if it produce different strings each time the sorting algoritm performance can spoil the experiment target, because of this they are all prededermined and shuffled each time then measured.
+    *There is array size(1000) and repetitions(30) variable that if you want to change parameters you can change here.
+    *The code produce Integer, Double and String array.
+   
 # -BubbleSortPassPerItem.java;
-    *Given before the experiment, untouched.
+    *Given before the experiment, don't touch.
 # -BubbleSortUntilNoChange.java;
-    *Given before the experiment, untouched.
+    *Given before the experiment, don't touch.
 # -BubbleSortWhileNeeded.java; 
-    *Given before the experiment, untouched.
+    *Given before the experiment, don't touch
 # -Sorter.java; 
-    *Given before the experiment, untouched.
+    *Given before the experiment, don' touch.
 # -ReversedExperiment.java;
-    *it opens a csv file consist of "algorithm","data_type","repetition","time_ns" columns. 
-    *for each repetitions(it starts with 30 as aforementioned) it produce Integer, Double, String arrays each length of 1000(can be changed later).
-    *use Java Collection library to reverse sort them.
-    *use TimeMeasurement.measureAll code (it will be explained belowe) to measure the sorting time and write the results to the "file" it sends from here.it sends for example (integers,"Integer",run,file); Integer array to be sorted, type name, at which repetition it is, and file for write.
+    *Code reverse sort the array.
+    *Code use TimeMeasurement.measureAll function (it will be explained later) to measure the sorting time and write the results to the "csv file" it sends from here.it sends for example (integers,"Integer",run,file); Integer array to be sorted, type name, at which repetition it is, and file for write.
 # -ShuffledExperiment.java;
-    *it opens a csv file consist of "algorithm","data_type","repetition","time_ns" columns. 
-    *for each repetitions(it starts with 30 as aforementioned) it produce Integer, Double, String arrays each length of 1000(can be changed later).
-    *use Java Collection library to shuffle them.
-    *use TimeMeasurement.measureAll code (it will be explained belowe) to measure the sorting time and write the results to the "file" it sends from here.
+    *Code shuffle the array.
+    *Code call TimeMeasurement.measureAll function (it will be explained later) to measure the sorting time and write the results to the "csv file" it sends from here.it sends for example (integers,"Integer",run,file); Integer array to be sorted, type name, at which repetition it is, and file for write.
 # -TimeMeasurement.java;
-    *it takes the input from Reversed and Shuffled java file and put those input to each PassPerItem,UntilNoChange and WhileNeeded java codes and measure its time for sorting and writes this time to csv file.
+    *Code takes the input from Reversed and Shuffled java file and put those input to each PassPerItem,UntilNoChange and WhileNeeded java codes and measure its time for sorting and writes this sorting time to csv file.
     *MeasureAll takes the parameter as (original,type,repetition,file); original is the array that was sent by Reversed or Shuffled java code. Then it calls the 3 different sorting algorithm for measuring and writes them to csv file.
-    *MeasureOne takes the parameter as(original, sorter, name, type, repetition, file); original is the array sent by Reversed or Shuffled java, sorter is the real object of PassPerItem,UntilNoChange or WhileNeeded java classes. First it copies the original array each time and put the copy to the 3 different sorting algorithm each time, so it keeps the original array (if original is reversed keep it reversed or shuffled keep it shuffled).If it doesnt do it at first call original shuffled array will be sorted and other sorting algoritms will use sorted array and experiment will be spoiled.
+    *MeasureOne takes the parameter as(original, sorter, name, type, repetition, file); original is the array sent by Reversed or Shuffled java, sorter is the real object of PassPerItem,UntilNoChange or WhileNeeded java classes. First it copies the original array each time and put the copy to the 3 different sorting algorithm each time, so it keeps the original array (if original is reversed keep it reversed or shuffled keep it shuffled).If it doesnt do it at first call original shuffled array will be sorted and successive sorting algoritms will use sorted array and experiment will be spoiled.
     
 
 ## Change experiment settings
 
-Open `exp01/ArrayData.java` and change only these two numbers:
+Open `exp01/ArrayData.java` and change only these two numbers(if you want):
 
 ```java
 // CHANGE THESE TWO VALUES TO CUSTOMIZE THE EXPERIMENT
@@ -47,20 +43,18 @@ Both shuffled and reversed experiments use the same settings automatically. Do n
 ## Run in VS Code
 
 Open this folder in VS Code with a Java Development Kit (JDK) installed and the Java extension pack.
-Run `ArrayData.java` first to check arrays, then run `ShuffledExperiment.java` and `ReversedExperiment.java` using **Run Java**. Run them with the project folder as the current directory so the CSV files appear here.
+Run `ArrayData.java` first to check arrays, then run `ShuffledExperiment.java` and `ReversedExperiment.java` using **Run Java**. Run them with the project folder as the current directory so the CSV files appear here.(current csv files is the result of 1000 array 30 repetitions.if you run the code your results overwrite previous ones)
 
 
 ## Data format
 
-Each CSV row contains `algorithm,data_type,repetition,time_ns`.
-With the default settings, each experiment contains 3 algorithms × 3 data types × 30 repetitions = 270 measurements (plus a header row). Both experiments together produce 540 measurements. For example 100 repetitions, each experiment produces 900 measurements.
+With the default settings, each experiment contains 3 algorithms × 3 data types × 30 repetitions = 270 measurements. Both experiments together produce 540 measurements. For example 100 repetitions, each experiment produces 900 measurements.
 
 ## Design notes
 
 - The input length and repetiton is controlled by 'ARRAY_SIZE' and 'REPETITIONS' .
 - For each repetition and data type, all three algorithms receive same input values in the same order, but on separate copies.
-- Shuffles use a fixed random seed (42) so the generated permutations can be reproduced.
 - Reversed inputs are the same descending arrays across repetitions.
 - `System.nanoTime()` measures only the `sort` call; input creation, copying, correctness checking and CSV writing happen outside of the code block.
 - Reversed order is a worst-case-style input for those bubble-sort algoritms, but shuffled inputs should not be called worst case.
-- CSV files will be used in excel file to produce the descriptive data.
+- CSV files will be used in excel file to produce the descriptive data.(How to copy and produce 5-item descriptive data will be explained in excel file README part)
